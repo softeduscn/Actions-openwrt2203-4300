@@ -97,9 +97,6 @@ msgstr "VPN服务器地址(如：192.168.1.110)"
 msgid "BBR Enable"
 msgstr "BBR 启用"
 
-msgid "ddns daemon"
-msgstr "ddns 守护"
-
 msgid "SmartDNS-AD Enable"
 msgstr "SmartDNS-AD 启用"
 

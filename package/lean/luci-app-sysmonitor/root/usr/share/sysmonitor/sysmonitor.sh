@@ -57,13 +57,6 @@ while [ "1" == "1" ]; do #死循环
 			ifup wan >/dev/null 2>&1 &
 		fi
 	fi
-	status=$(uci_get_by_name $NAME sysmonitor ddns 0)
-	if [ "$status" == 1 ]; then
-	status=$(ps | grep dynamic_dns_updater | grep -v grep | grep -v check | wc -l)
-	if [ "$status" -lt 1 ]; then
-		[ -f /etc/init.d/ddns ] && /etc/init.d/ddns start           
-	fi
-	fi
 	[ $(uci_get_by_name $NAME sysmonitor enable 0) == 0 ] && exit 0
 	
 	num=0

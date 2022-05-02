@@ -16,9 +16,6 @@ o.rmempty=false
 o=s:option(Flag,"bbr", translate("BBR Enable"))
 o.rmempty=false
 
-o=s:option(Flag,"ddns", translate("ddns daemon"))
-o.rmempty=false
-
 o = s:option(Value, "homeip", translate("Home IP Address"))
 --o.description = translate("IP for Home(192.168.1.1)")
 o.datatype = "or(host)"
