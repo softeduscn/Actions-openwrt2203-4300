@@ -1,0 +1,28 @@
+<fieldset class="cbi-section">
+	<table width="100%" cellspacing="10" id="_xlnetacc_gateway_status_table">
+		<tr><td width="20%" title="Refresh Network ..." id="_gateway_title"><font color=green></font></td><td title="GO TO Network ..." id="_gateway_state"><em></em></td></tr>
+	</table>
+	<table width="100%" cellspacing="10" id="_xlnetacc_wg_status_table">
+		<tr><td width="20%" title="Refresh Wireguard ..." id="_wg_title"></td><td id="_wg_state"><em></em></td></tr>
+	</table>
+</fieldset>
+
+<script type="text/javascript">//<![CDATA[
+	var gateway_state = document.getElementById('_gateway_state');
+	var wg_state = document.getElementById('_wg_state');
+	var gateway_title = document.getElementById('_gateway_title');
+	var wg_title = document.getElementById('_wg_title');
+	XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "sys", "sysmonitor", "gateway_status")%>', null, function(x, status) {
+		if ( x && x.status == 200 ) {
+			gateway_title.innerHTML ='<em><b><a href="sysmonitor/refresh"><font color=green>Gateway Address</font></a></b></em>';
+			gateway_state.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/network/network"><font color=green>'+status.gateway_state+'</font></a></b></em>';
+		}
+	});
+	XHR.poll(5, '<%=luci.dispatcher.build_url("admin", "sys", "sysmonitor", "wg_status")%>', null, function(x, status) {
+		if ( x && x.status == 200 ) {
+			wg_title.innerHTML ='<em><b><a href="sysmonitor/refreshwg"><font color=green>Wireguard Address</font></a></b></em>';
+			wg_state.innerHTML ='<em><b><font color=green>'+status.wg_state+'</font></b></em>';
+		}
+	});
+//]]></script>
+

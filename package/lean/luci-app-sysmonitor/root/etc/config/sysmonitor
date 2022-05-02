@@ -1,0 +1,13 @@
+
+config sysmonitor 'sysmonitor'
+	option enable '1'
+	option homeip '192.168.1.1'
+	option vpnip '192.168.1.110'
+	option publicip '192.168.1.1'
+	option bbr '1'
+	option ddns '1'
+	option smartdnsAD '0'
+        option vpn '0'
+        option config '0'
+	option firmware 'https://github.com/softeduscn/Actions-openwrt2203-4300/releases/download/WNDR-4300/openwrt-ath79-nand-netgear_wndr4300-squashfs-sysupgrade.bin'
+
