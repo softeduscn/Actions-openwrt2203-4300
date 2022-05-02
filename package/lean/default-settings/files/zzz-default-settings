@@ -24,7 +24,7 @@ uci set dhcp.lan.dhcpv6='relay'
 uci set dhcp.lan.ndp='relay'
 uci commit dhcp
 
-cat /etc/config/dhcp | grep wan6 > null
+cat /etc/config/dhcp | grep wan6 > /dev/null
 if [ $? -ne 0 ];then
 cat >> /etc/config/dhcp <<EOF
 config dhcp 'wan6'
@@ -96,7 +96,7 @@ sed -i '/192.168.1.8 NAS/d' /etc/hosts
 sed -i '/192.168.1.110 KMS/d' /etc/hosts
 echo '192.168.1.8 NAS' >> /etc/hosts
 echo '192.168.1.110 KMS' >> /etc/hosts
-cat /etc/config/firewall | grep NetBIOS-138 > null
+cat /etc/config/firewall | grep NetBIOS-138 > /dev/null
 if [ $? -ne 0 ];then
 cat >> /etc/config/firewall <<EOF
 config redirect
@@ -268,6 +268,7 @@ config service 'ChangeipCom'
 	option username 'sqmshcn@gmail.com'
 	option password 'sqmshcn110'
 	option interface 'eth0.2'
+	option force_dnstcp '1'
 
 config service 'DynuNet'
 	option service_name 'dynu.com'
@@ -284,9 +285,9 @@ config service 'DynuNet'
 	option bind_network 'wan'
 	option lookup_host 'hellomain.ddnsfree.com'
 	option domain 'hellomain.ddnsfree.com'
-	option force_ipversion '1'
 	option interface 'eth0.2'
-
+	option force_dnstcp '1'
+	
 config service 'DynuNet6'
 	option service_name 'dynu.com'
 	option use_ipv6 '1'
@@ -303,6 +304,7 @@ config service 'DynuNet6'
 	option username 'sqmshcn@gmail.com'
 	option password 'sqmshcn110'
 	option enabled '1'
+	option force_dnstcp '1'
 EOF
 
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
