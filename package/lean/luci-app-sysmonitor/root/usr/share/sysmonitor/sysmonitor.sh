@@ -31,7 +31,9 @@ ping_url() {
 uci set network.wan.ipaddr='192.168.1.120'
 [ $(uci get network.wan_eth0_2_dev.macaddr) == 'e4:f4:c6:fc:49:02' ] && uci set network.wan.ipaddr='192.168.1.121'
 uci commit network
-ifup wan &
+ifup wan
+ifup wan6
+ifup lan
 
 while [ "1" == "1" ]; do #死循环
 
@@ -46,7 +48,9 @@ while [ "1" == "1" ]; do #死循环
 			uci set network.wan.gateway=$homeip
 			uci set network.wan.dns=$homeip
 			uci commit network
-			ifup wan >/dev/null 2>&1 &	
+			ifup wan
+			ifup wan6
+			ifup lan	
 		fi
 	else
 		vpnok=1
@@ -54,7 +58,9 @@ while [ "1" == "1" ]; do #死循环
 			uci set network.wan.gateway=$vpnip
 			uci set network.wan.dns=$vpnip
 			uci commit network
-			ifup wan >/dev/null 2>&1 &
+			ifup wan
+			ifup wan6
+			ifup lan
 		fi
 	fi
 	[ $(uci_get_by_name $NAME sysmonitor enable 0) == 0 ] && exit 0
