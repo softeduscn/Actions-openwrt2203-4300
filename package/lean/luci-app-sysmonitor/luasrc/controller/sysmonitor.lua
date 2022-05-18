@@ -15,6 +15,8 @@ function index()
 
 	entry({"admin", "sys", "sysmonitor", "gateway_status"}, call("action_gateway_status")).leaf = true
 	entry({"admin", "sys", "sysmonitor", "wg_status"}, call("action_wg_status")).leaf = true
+	entry({"admin", "sys", "sysmonitor", "ipsec_status"}, call("action_ipsec_status")).leaf = true
+	entry({"admin", "sys", "sysmonitor", "pptp_status"}, call("action_pptp_status")).leaf = true
 	entry({"admin", "sys", "sysmonitor", "refresh"}, call("refresh")).leaf = true
 	entry({"admin", "sys", "sysmonitor", "refreshwg"}, call("refreshwg")).leaf = true
 	entry({"admin", "sys", "sysmonitor", "get_log"}, call("get_log")).leaf = true
@@ -42,6 +44,20 @@ function action_wg_status()
 	luci.http.prepare_content("application/json")
 	luci.http.write_json({
 		wg_state = luci.sys.exec("curl http://47.100.183.141/getwg.php")
+	})
+end
+
+function action_ipsec_status()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+		ipsec_state = luci.sys.exec("/usr/share/sysmonitor/sysapp.sh ipsec")
+	})
+end
+
+function action_pptp_status()
+	luci.http.prepare_content("application/json")
+	luci.http.write_json({
+		pptp_state = luci.sys.exec("/usr/share/sysmonitor/sysapp.sh pptp")
 	})
 end
 
