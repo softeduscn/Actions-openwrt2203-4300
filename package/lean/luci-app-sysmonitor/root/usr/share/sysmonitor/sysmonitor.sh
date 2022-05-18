@@ -63,6 +63,9 @@ while [ "1" == "1" ]; do #死循环
 			ifup lan
 		fi
 	fi
+
+	/usr/share/sysmonitor/sysapp.sh getip >/www/localip.html
+	/usr/share/sysmonitor/sysapp.sh getip6 >/www/localip6.html
 	[ $(uci_get_by_name $NAME sysmonitor enable 0) == 0 ] && exit 0
 	
 	num=0
