@@ -136,11 +136,33 @@ config redirect
 	option dest_ip '192.168.1.8'
 
 config rule
+	option name 'l2tp'
+	list proto 'udp'
+	option src 'wan'
+	option target 'ACCEPT'
+	option dest_port '1701'
+
+config rule
+	list proto 'udp'
+	option target 'ACCEPT'
+	option src 'wan'
+	option dest_port '1701'
+	option dest 'lan'
+	option name 'Allow-l2tp'
+
+config rule
 	option src 'wan'
 	option target 'ACCEPT'
 	option name 'Allow-OMV'
 	list src_ip '192.168.1.8'
 	list proto 'all'
+	option dest '*'
+
+config rule
+	option name 'OMV'
+	option src 'wan'
+	list src_ip '192.168.1.8'
+	option target 'ACCEPT'
 
 config zone
 	option name 'wghome'
