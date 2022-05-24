@@ -7,6 +7,8 @@ config sysmonitor 'sysmonitor'
 	option bbr '1'
 	option smartdnsAD '0'
         option vpn '0'
+	option ipsec '1'
+	option pptp '1'
         option config '0'
 	option firmware 'https://github.com/softeduscn/Actions-openwrt2203-4300/releases/download/WNDR-4300/openwrt-ath79-nand-netgear_wndr4300-squashfs-sysupgrade.bin'
 
