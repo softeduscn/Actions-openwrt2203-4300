@@ -218,10 +218,18 @@ upgrade() {
 	fi
 }
 
+getlocal() {
+	echo $(getip)' '$(getip6)
+}
+
+
 arg1=$1
 shift
 case $arg1 in
 
+getlocal)
+	getlocal
+	;;
 getip)
 	getip
 	;;
