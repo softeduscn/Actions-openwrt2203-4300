@@ -200,14 +200,6 @@ firmware () {
 	echo "Please go to Update">> /var/log/sysmonitor.log
 }
 
-getip() {
-	echo $(ip -o -4 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1)
-}
-
-getip6() {
-	echo $(ip -o -6 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1 |head -n1)
-}
-
 upgrade() {
 	if [ $(uci get sysmonitor.sysmonitor.config)  == 1 ]; then
 		echo 'sysupgrade -c '$1 >> /var/log/sysmonitor.log
@@ -218,18 +210,19 @@ upgrade() {
 	fi
 }
 
-getlocal() {
-	echo $(getip)' '$(getip6)
+
+getip() {
+	echo $(ip -o -4 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1)
 }
 
+getip6() {
+	echo $(ip -o -6 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1 |head -n1)
+}
 
 arg1=$1
 shift
 case $arg1 in
 
-getlocal)
-	getlocal
-	;;
 getip)
 	getip
 	;;
