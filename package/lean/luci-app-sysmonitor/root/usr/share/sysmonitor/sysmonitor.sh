@@ -28,6 +28,35 @@ ping_url() {
 	echo $status
 }
 
+check_ip() {
+	if [ ! -n "$1" ]; then
+		#echo "NO IP!"
+		echo ""
+	else
+ 		IP=$1
+    		VALID_CHECK=$(echo $IP|awk -F. '$1<=255&&$2<=255&&$3<=255&&$4<=255{print "yes"}')
+		if echo $IP|grep -E "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$">/dev/null; then
+			if [ ${VALID_CHECK:-no} == "yes" ]; then
+				# echo "IP $IP available."
+				echo $IP
+			else
+				#echo "IP $IP not available!"
+				echo ""
+			fi
+		else
+			#echo "IP is name convert ip!"
+			dnsip=$(nslookup $IP|grep Address|sed -n '2,2p'|cut -d' ' -f2)
+			if [ ! -n "$dnsip" ]; then
+				#echo "Inull"
+				echo $test
+			else
+				#echo "again check"
+				echo $(check_ip $dnsip)
+			fi
+		fi
+	fi
+}
+
 uci set network.wan.ipaddr='192.168.1.120'
 [ $(uci get network.wan_eth0_2_dev.macaddr) == 'e4:f4:c6:fc:49:02' ] && uci set network.wan.ipaddr='192.168.1.121'
 uci commit network
@@ -38,7 +67,7 @@ while [ "1" == "1" ]; do #死循环
 
 	homeip=$(uci_get_by_name $NAME sysmonitor homeip 0)
 	vpnip=$(uci_get_by_name $NAME sysmonitor vpnip 0)
-	gateway=$(route |grep default|sed 's/default[[:space:]]*//'|sed 's/[[:space:]].*$//')
+	gateway=$(check_ip $(route |grep default|sed 's/default[[:space:]]*//'|sed 's/[[:space:]].*$//'))
 	status=$(ping_url $vpnip)
 	if [ "$status" == 0 ]; then
 		if [ $gateway == $vpnip ]; then
