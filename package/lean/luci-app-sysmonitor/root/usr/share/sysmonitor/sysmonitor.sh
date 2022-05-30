@@ -38,20 +38,17 @@ while [ "1" == "1" ]; do #死循环
 
 	homeip=$(uci_get_by_name $NAME sysmonitor homeip 0)
 	vpnip=$(uci_get_by_name $NAME sysmonitor vpnip 0)
-	dnsadd=$(uci_get_by_name network wan dns 0)
-	
+	gateway=$(route |grep default|sed 's/default[[:space:]]*//'|sed 's/[[:space:]].*$//')
 	status=$(ping_url $vpnip)
 	if [ "$status" == 0 ]; then
-		vpnok=0
-		if [ $dnsadd == $vpnip ]; then
+		if [ $gateway == $vpnip ]; then
 			uci set network.wan.gateway=$homeip
 			uci set network.wan.dns=$homeip
 			uci commit network
 			ifup wan
 		fi
 	else
-		vpnok=1
-		if [ $dnsadd == $homeip ]; then
+		if [ $gateway == $homeip ]; then
 			uci set network.wan.gateway=$vpnip
 			uci set network.wan.dns=$vpnip
 			uci commit network
