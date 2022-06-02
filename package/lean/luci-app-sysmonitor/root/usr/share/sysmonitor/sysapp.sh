@@ -219,6 +219,10 @@ getip6() {
 	echo $(ip -o -6 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1 |head -n1)
 }
 
+getgateway() {
+	echo $(route |grep default|sed 's/default[[:space:]]*//'|sed 's/[[:space:]].*$//')
+}
+
 arg1=$1
 shift
 case $arg1 in
@@ -228,6 +232,9 @@ getip)
 	;;
 getip6)
 	getip6
+	;;
+getgateway)
+	getgateway
 	;;
 agh)
 	agh
