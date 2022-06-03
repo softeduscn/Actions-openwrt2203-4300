@@ -36,9 +36,6 @@ o = s:option(Value, "vpnip", translate("VPN IP Address"))
 o.datatype = "or(host)"
 o.rmempty = false
 
-o=s:option(Flag,"config", translate("Keep config"))
-o.rmempty=false
-
 o = s:option(Value, translate("firmware"), translate("Firmware Address"))
 --o.description = translate("Firmeware download Address)")
 o.default = "https://github.com/softeduscn/Actions-openwrt2203-4300/releases/download/WNDR-4300/openwrt-ath79-nand-netgear_wndr4300-squashfs-sysupgrade.bin"

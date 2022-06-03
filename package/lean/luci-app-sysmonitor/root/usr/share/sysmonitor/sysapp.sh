@@ -200,16 +200,6 @@ firmware () {
 	echo "Please go to Update">> /var/log/sysmonitor.log
 }
 
-upgrade() {
-	if [ $(uci get sysmonitor.sysmonitor.config)  == 1 ]; then
-		echo 'sysupgrade -c '$1 >> /var/log/sysmonitor.log
-		sysupgrade -c $1
-	else
-		echo 'sysupgrade -n '$1 >> /var/log/sysmonitor.log
-		sysupgrade -n $1
-	fi
-}
-
 
 getip() {
 	echo $(ip -o -4 addr list eth0.2 | cut -d ' ' -f7 | cut -d'/' -f1)
@@ -259,9 +249,6 @@ ad_switch)
 	;;
 firmware)
 	firmware $1
-	;;
-upgrade)
-	upgrade $1
 	;;
 test)
 	echo $1
