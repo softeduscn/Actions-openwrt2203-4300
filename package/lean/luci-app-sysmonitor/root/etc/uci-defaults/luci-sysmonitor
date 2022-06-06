@@ -14,16 +14,6 @@ if [ $? -eq 0 ];then
 	uci commit network
 fi
 
-cat > /etc/config/ttyd <<EOF
-config ttyd
-	option interface '@lan'
-	option command '/bin/login'
-
-config ttyd
-	option interface '@wan'
-	option command '/bin/login'
-EOF
-
 [ -f /etc/init.d/ddns ] && /etc/init.d/ddns stop
 [ -f /etc/init.d/ddns ] && /etc/init.d/ddns disable
 

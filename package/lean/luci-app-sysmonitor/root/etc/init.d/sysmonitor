@@ -17,6 +17,7 @@ stop()
 }
 start()
 {
+	[ "$(ps | grep -v grep | grep ttyd | wc -l)" == 0 ] && /usr/bin/ttyd /bin/login &
 	echo "[ \$INTERFACE = wan ] && touch /tmp/sysmonitor" >/etc/hotplug.d/iface/90-sysmonitor
 	cat /etc/config/dhcp | grep 127.0.0.1#5053 > /dev/null
 	if [ $? -eq 0 ];then
