@@ -56,6 +56,11 @@ check_ip() {
 		fi
 	fi
 }
+[ $(ifconfig |grep br-lan|cut -d' ' -f9) == 'A4:2B:8C:15:DE:94' ] && {
+uci set network.wan.ipaddr='192.168.1.120'
+uci commit network
+ifup wan
+}
 
 ipold='888'
 while [ "1" == "1" ]; do #死循环
