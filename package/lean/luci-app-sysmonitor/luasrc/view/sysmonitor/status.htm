@@ -48,7 +48,7 @@
 			wireguard_title.innerHTML ='<em><b></b></em>';
 			wireguard_state.innerHTML ='<em><b></b></em>';}
 			else {
-			wireguard_title.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/network/network"><font color=green>Wireguard Users</font></a></b></em>';
+			wireguard_title.innerHTML ='<em><b><font color=green>Wireguard Users</font></b></em>';
 			wireguard_state.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/sys/sysmonitor/wgusers"><font color=green>'+status.wireguard_state+'</font></a></b></em>';}
 		}
 	});
@@ -58,7 +58,7 @@
 			ipsec_title.innerHTML ='<em><b></b></em>';
 			ipsec_state.innerHTML ='<em><b></b></em>';}
 			else {
-			ipsec_title.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/vpn/ipsec-server"><font color=green>IPSEC Users</font></a></b></em>';
+			ipsec_title.innerHTML ='<em><b><font color=green>IPSEC Users</font></b></em>';
 			ipsec_state.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/vpn/ipsec-server/online"><font color=green>'+status.ipsec_state+'</font></a></b></em>';}
 		}
 	});
@@ -68,7 +68,7 @@
 			pptp_title.innerHTML ='<em><b></b></em>';
 			pptp_state.innerHTML ='<em><b></b></em>';}
 			else {
-			pptp_title.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/vpn/pptpd"><font color=green>PPTP Users</font></a></b></em>';
+			pptp_title.innerHTML ='<em><b><font color=green>PPTP Users</font></b></em>';
 			pptp_state.innerHTML ='<em><b><a href="/cgi-bin/luci/admin/vpn/pptpd/online"><font color=green>'+status.pptp_state+'</font></a></b></em>';}
 		}
 	});
