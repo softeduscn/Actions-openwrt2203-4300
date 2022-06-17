@@ -293,6 +293,15 @@ uci add_list minidlna.config.media_dir="/mnt/music"
 uci commit minidlna
 }
 
+[ -f /etc/init.d/ttyd ] && {
+cat > /etc/config/ttyd <<EOF
+config ttyd
+	option command '/bin/login'
+	option debug '7'
+	option ipv6 '1'
+EOF
+}
+
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
 echo "#dhcp-option-force=125,00:00:00:00:16:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0b:02:00:55:0a:02:20:00" >> /etc/dnsmasq.conf
 echo "#dhcp-option=15" >> /etc/dnsmasq.conf

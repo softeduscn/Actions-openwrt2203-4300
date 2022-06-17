@@ -17,8 +17,6 @@ stop()
 }
 start()
 {
-	killall ttyd
-	[ "$(ps | grep -v grep | grep ttyd | wc -l)" == 0 ] && /usr/bin/ttyd /bin/login &
 	echo "[ \$INTERFACE = wan ] && touch /tmp/sysmonitor" >/etc/hotplug.d/iface/90-sysmonitor
 	if [ $(uci get sysmonitor.sysmonitor.bbr) == 1 ];  then
 		sysctl -w net.ipv4.tcp_congestion_control=bbr
