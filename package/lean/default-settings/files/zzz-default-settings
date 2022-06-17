@@ -12,7 +12,7 @@ uci commit fstab
 uci set upnpd.config.enabled='1'
 uci commit upnpd
 
-uci set system.@system[0].hostname='VAIOHOME'
+uci set system.@system[0].hostname='VAIO'
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
 uci commit system
@@ -96,48 +96,13 @@ uci set firewall.@zone[1].input='ACCEPT'
 uci commit firewall
 
 sed -i '/192.168.1.8 NAS/d' /etc/hosts
-#sed -i '/192.168.1.110 KMS/d' /etc/hosts
+sed -i '/192.168.88.1 VAIO/d' /etc/hosts
 echo '192.168.1.8 NAS' >> /etc/hosts
-#echo '192.168.1.110 KMS' >> /etc/hosts
+echo '192.168.88.1 VAIO' >> /etc/hosts
+
 cat /etc/config/firewall | grep NetBIOS-138 > /dev/null
 if [ $? -ne 0 ];then
 cat >> /etc/config/firewall <<EOF
-config redirect
-	option dest_port '137'
-	option name 'NetBIOS-137'
-	option src_dport '137'
-	option target 'DNAT'
-	option dest 'wan'
-	option src 'lan'
-	option dest_ip '192.168.1.8'
-
-config redirect
-	option dest_port '138'
-	option src 'lan'
-	option name 'NetBIOS-138'
-	option src_dport '138'
-	option target 'DNAT'
-	option dest_ip '192.168.1.8'
-	option dest 'wan'
-
-config redirect
-	option dest_port '139'
-	option name 'NetBIOS-139'
-	option src_dport '139'
-	option target 'DNAT'
-	option dest 'wan'
-	option src 'lan'
-	option dest_ip '192.168.1.8'
-
-config redirect
-	option dest_port '445'
-	option name 'NetBIOS-445'
-	option src_dport '445'
-	option target 'DNAT'
-	option dest 'wan'
-	option src 'lan'
-	option dest_ip '192.168.1.8'
-
 config zone
 	option name 'wghome'
 	option input 'ACCEPT'
@@ -240,6 +205,52 @@ config device
 config device
 	option name 'wlan1'
 EOF
+
+cat >> /etc/config/samba4 <<EOF
+config samba
+	option workgroup 'WORKGROUP'
+	option charset 'UTF-8'
+	option description 'Samba on OpenWRT'
+
+config sambashare
+	option name 'music'
+	option path '/mnt/music'
+	option read_only 'no'
+	option guest_ok 'yes'
+	option create_mask '0777'
+	option dir_mask '0777'
+	option force_root '1'
+
+config sambashare
+	option name 'app'
+	option read_only 'no'
+	option guest_ok 'yes'
+	option create_mask '0777'
+	option dir_mask '0777'
+	option path '/mnt/app'
+	option force_root '1'
+EOF
+
+file='/etc/samba/smb.conf.template'
+sed -i  's|#dns proxy = No|dns proxy = Yes|' $file
+sed -i  's|#local master = no|local master = Yes|' $file
+sed -i  's|#preferred master = yes|preferred master = yes|' $file
+sed -i  's|#smb ports = 445 139|smb ports = 445 139|' $file
+sed -i  's|#dns proxy = No|dns proxy = Yes|' $file
+cat >> $file << EOF
+	browseable = yes
+	wins support = yes
+	wins proxy =  yes
+	remote announce
+	remote browse sync
+	max protocol = SMB3
+	min protocol = NT1
+EOF
+
+sed -i '/media_dir/d' /etc/config/minidlna
+uci set minidlna.config.enabled='1'
+uci add_list minidlna.config.media_dir="/mnt/music"
+uci commit minidlna
 
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
 echo "#dhcp-option-force=125,00:00:00:00:16:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0b:02:00:55:0a:02:20:00" >> /etc/dnsmasq.conf
