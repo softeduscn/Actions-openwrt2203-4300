@@ -243,7 +243,7 @@ config device
 EOF
 
 [ -f /init.d/samba4 ] && {
-cat >> /etc/config/samba4 <<EOF
+cat > /etc/config/samba4 <<EOF
 config samba
 	option workgroup 'WORKGROUP'
 	option charset 'UTF-8'
