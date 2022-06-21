@@ -316,4 +316,8 @@ wifi up
 sed -i -e '/option Interface/d' /etc/config/dropbear
 /etc/init.d/dropbear restart
 
+/etc/init.d/ipsec disable
+/etc/init.d/pptpd disable
+/etc/init.d/luci-app-pptp-server disable
+
 exit 0

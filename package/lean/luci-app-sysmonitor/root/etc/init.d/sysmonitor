@@ -17,7 +17,6 @@ stop()
 }
 start()
 {
-	echo "[ \$INTERFACE = wan ] && touch /tmp/sysmonitor" >/etc/hotplug.d/iface/90-sysmonitor
 	if [ $(uci get sysmonitor.sysmonitor.bbr) == 1 ];  then
 		sysctl -w net.ipv4.tcp_congestion_control=bbr
 	else
@@ -40,36 +39,6 @@ start()
 		uci set luci-app-pptp-server.pptpd.enabled='0'
 		uci commit luci-app-pptp-server
 		[ $(ps -w |grep pptpd|grep -v grep|wc -l) -ne 0 ] && /etc/init.d/luci-app-pptp-server stop
-	fi
-	if [ $(uci get sysmonitor.sysmonitor.vpn) == 0 ];  then
-		# Stop Passwall
-		if [ -f "/etc/init.d/passwall" ]; then
-			if [ $(uci get passwall.@global[0].enabled) == 1 ]; then
-				uci set passwall.@global[0].enabled=0
-				uci commit passwall
-				/etc/init.d/passwall stop &
-			fi
-		fi
-		# Stop Shadowsocksr
-		if [ -f "/etc/init.d/shadowsocksr" ]; then
-			[ "$(ps -w |grep ssr- |grep -v grep |wc -l)" -gt 0 ] && /etc/init.d/shadowsocksr stop &
-		fi
-	else
-		if [ -f "/etc/init.d/passwall" ]; then
-			if [ $(uci get passwall.@global[0].tcp_node) != 'nil' ]; then
-				uci set passwall.@global[0].enabled=1
-				uci commit passwall
-				/etc/init.d/passwall restart &
-			fi			
-		elif [ -f "/etc/init.d/shadowsocksr" ]; then
-			if [ $(uci get passwall.@global[0].enabled) == 0 ]; then
-				/etc/init.d/shadowsocksr restart &
-			fi
-		else
-			uci set sysmonitor.sysmonitor.vpn=0
-			uci commit sysmonitor
-			touch /tmp/sysmonitor
-		fi
 	fi
 	if [ -f "/etc/init.d/smartdns" ]; then
 		if [ $(uci get sysmonitor.sysmonitor.smartdnsAD) == 1 ];  then
