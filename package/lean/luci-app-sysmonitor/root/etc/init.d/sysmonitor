@@ -17,6 +17,12 @@ stop()
 }
 start()
 {
+	[ -f /etc/config/upnpd ] && {	
+	iptables -N MINIUPNPD
+	iptables -t nat -N MINIUPNPD
+	[ $(iptables -L MINIUPNPD -nv|grep MINIUPNPD|cut -d'(' -f2|cut -d' ' -f1) == 0 ] && iptables -I FORWARD -i pppoe-wan -o br-lan -j MINIUPNPD
+	[ $(iptables -t nat -L MINIUPNPD -nv|grep MINIUPNPD|cut -d'(' -f2|cut -d' ' -f1) == 0 ] && iptables -t nat -I PREROUTING -i pppoe-wan -j MINIUPNPD
+	}
 	if [ $(uci get sysmonitor.sysmonitor.bbr) == 1 ];  then
 		sysctl -w net.ipv4.tcp_congestion_control=bbr
 	else
