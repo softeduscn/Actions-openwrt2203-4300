@@ -57,6 +57,8 @@ check_ip() {
 	fi
 }
 [ $(ifconfig |grep br-lan|cut -d' ' -f9) == 'A4:2B:8C:15:DE:94' ] && {
+d=$(date "+%Y-%m-%d %H:%M:%S")
+echo $d": ip=192.168.1.120" >> /var/log/sysmonitor.log
 uci set network.wan.ipaddr='192.168.1.120'
 uci commit network
 ifup wan

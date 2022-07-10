@@ -28,33 +28,6 @@ start()
 	else
 		sysctl -w net.ipv4.tcp_congestion_control=cubic
 	fi
-	if [ $(uci get sysmonitor.sysmonitor.ipsec) == 1 ];  then
-		uci set ipsec.ipsec.enabled='1'
-		uci commit ipsec
-		[ $(ps -w |grep ipsec/starter|grep -v grep|wc -l) -eq 0 ] && /etc/init.d/ipsec start
-	else
-		uci set ipsec.ipsec.enabled='0'
-		uci commit ipsec
-		[ $(ps -w |grep ipsec/starter|grep -v grep|wc -l) -ne 0 ] && /etc/init.d/ipsec stop
-	fi
-	if [ $(uci get sysmonitor.sysmonitor.pptp) == 1 ];  then
-		uci set luci-app-pptp-server.pptpd.enabled='1'
-		uci commit luci-app-pptp-server
-		 [ $(ps -w |grep pptpd|grep -v grep|wc -l) -eq 0 ] && /etc/init.d/luci-app-pptp-server start
-	else
-		uci set luci-app-pptp-server.pptpd.enabled='0'
-		uci commit luci-app-pptp-server
-		[ $(ps -w |grep pptpd|grep -v grep|wc -l) -ne 0 ] && /etc/init.d/luci-app-pptp-server stop
-	fi
-	if [ -f "/etc/init.d/smartdns" ]; then
-		if [ $(uci get sysmonitor.sysmonitor.smartdnsAD) == 1 ];  then
-			sed -i s/'#conf-file \/etc\/smartdns\/anti-ad-for-smartdns.conf'/'conf-file \/etc\/smartdns\/anti-ad-for-smartdns.conf'/ /etc/smartdns/custom.conf
-		else
-			sed -i s/'#conf-file'/'conf-file'/ /etc/smartdns/custom.conf
-			sed -i s/'conf-file \/etc\/smartdns\/anti-ad-for-smartdns.conf'/'#conf-file \/etc\/smartdns\/anti-ad-for-smartdns.conf'/ /etc/smartdns/custom.conf	
-		fi
-		/etc/init.d/smartdns restart &
-	fi
 	$APP_PATH/sysapp.sh getip
 	$APP_PATH/sysapp.sh getip6
 	set sysmonitor.sysmonitor.enable=1
